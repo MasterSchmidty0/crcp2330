@@ -8,4 +8,44 @@
 // i.e. writes "black" in every pixel. When no key is pressed, the
 // program clears the screen, i.e. writes "white" in every pixel.
 
-// Put your code here.
+(START)
+@8192
+D=A
+@i
+M=D
+@KBD
+D=M
+@CLR
+D;JEQ
+
+@FILL
+0;JMP
+
+(CLR)
+	@i 
+	D=M
+	@SCREEN
+	A=A+D
+	M=0
+	@i
+	M=M-1
+	@i
+	D=M
+	@START
+	D;JEQ
+	@CLR
+	0;JMP
+(FILL)
+	@i 
+	D=M
+	@SCREEN
+	A=A+D
+	M=-1
+	@i
+	M=M-1
+	@i
+	D=M
+	@START
+	D;JEQ
+	@FILL
+	0;JMP
