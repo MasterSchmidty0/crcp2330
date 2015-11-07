@@ -39,5 +39,67 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    Mux16(a=instruction, b=ALUout, sel=instruction[15], out=instOut);
+
+    And(a=instruction[15], b=instruction[5], out=destA);
+    Not(in=instruction[15], out=Ainstruction);
+    Or(a=Ainstruction, b=destA, out=loadA);
+
+    ARegister(in=instOut, load=loadA, out=A, out[14]=addressM[14], out[13]=addressM[13], out[12]=addressM[12], out[11]=addressM[11], out[10]=addressM[10], out[9]=addressM[9], out[8]=addressM[8], out[7]=addressM[7], out[6]=addressM[6], out[5]=addressM[5], out[4]=addressM[4], out[3]=addressM[3], out[2]=addressM[2], out[1]=addressM[1], out[0]=addressM[0]);
+
+    Mux16(a=A, b=inM, sel=instruction[12], out=AorM);
+
+    ALU(x=D, y=AorM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], zr=zrOut, ng=ngOut, out=outM, out=ALUout);
+
+    And(a=instruction[15], b=instruction[4], out=loadD);
+
+    DRegister(in=ALUout, load=loadD, out=D);
+
+    And(a=instruction[3], b=instruction[15], out=writeM);
+
+    Not(in=zrOut, out=notzr);
+    Not(in=ngOut, out=notng);
+    And(a=notzr, b=notng, out=GT);
+    Or(a=GT, b=zrOut, out=GE);
+    Or(a=zrOut, b=ngOut, out=LE);
+
+    Not(in=instruction[0], out=notj3);
+    Not(in=instruction[1], out=notj2);
+    Not(in=instruction[2], out=notj1);
+
+    And(a=notj1, b=notj2, out=notj1andnotj2);
+    And(a=notj1andnotj2, b=instruction[0], out=notj1andnotj2andj3);
+    And(a=notj1andnotj2andj3, b=GT, out=JGT);
+
+    And(a=notj1, b=instruction[1], out=notj1andj2);
+    And(a=notj1andj2, b=notj3, out=notj1andj2andnotj3);
+    And(a=notj1andj2andnotj3, b=zrOut, out=JEQ);
+
+    And(a=notj1andj2, b=instruction[0], out=notj1andj2andj3);
+    And(a=notj1andj2andj3, b=GE, out=JGE);
+
+    And(a=instruction[2], b=notj2, out=j1andnotj2);
+    And(a=j1andnotj2, b=notj3, out=j1andnotj2andnotj3);
+    And(a=j1andnotj2andnotj3, b=ngOut, out=JLT);
+
+    And(a=j1andnotj2, b=instruction[0], out=j1andnotj2andj3);
+    And(a=j1andnotj2andj3, b=notzr, out=JNE);
+
+    And(a=instruction[2], b=instruction[1], out=j1andj2);
+    And(a=j1andj2, b=notj3, out=j1andj2andnotj3);
+    And(a=j1andj2andnotj3, b=LE, out=JLE);
+
+    And(a=j1andj2, b=instruction[0], out=JMP);
+
+    Or(a=JGT, b=JEQ, out=JGTOJEQ);
+    Or(a=JGE, b=JLT, out=JGEOJLT);
+    Or(a=JNE, b=JLE, out=JNEOJLE);
+
+    Or(a=JGTOJEQ, b=JGEOJLT, out=part1);
+    Or(a=JNEOJLE, b=JMP, out=part2);
+
+    Or(a=part1, b=part2, out=jumpCondition);
+    And(a=instruction[15], b=jumpCondition, out=PCLoad);
+
+    PC(in=A, load=PCLoad, inc=true, reset=reset, out[14]=pc[14], out[13]=pc[13], out[12]=pc[12], out[11]=pc[11], out[10]=pc[10], out[9]=pc[9], out[8]=pc[8], out[7]=pc[7], out[6]=pc[6], out[5]=pc[5], out[4]=pc[4], out[3]=pc[3], out[2]=pc[2], out[1]=pc[1], out[0]=pc[0]);
 }
