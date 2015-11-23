@@ -1,0 +1,31 @@
+class Cell {
+	field int x, y;
+	field int size;
+
+	constructor Cell new(int Ax, int Ay, int Asize) {
+		let x = Ax;
+		let y = Ay;
+		let size = Asize;
+
+		do draw();
+
+		return this;
+	}
+
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	method void draw() {
+		do Screen.setColor(true);
+		do Screen.drawCircle(x, y, size);
+		return;
+	}
+
+	method void erase() {
+		do Screen.setColor(false);
+		do Screen.drawCircle(x, y, size);
+		return;
+	}
+}

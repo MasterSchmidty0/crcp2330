@@ -1,0 +1,12 @@
+class Main {
+	
+	function void main() {
+		var CellGame game;
+
+		let game = CellGame.new();
+		do game.run();
+		do game.dispose();
+		
+		return;
+	}
+}
