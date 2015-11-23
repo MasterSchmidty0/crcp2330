@@ -1,24 +1,47 @@
 class CellGame {
-	field Cell cell;
+	field Cell player, smallCell, bigCell;
 	field int direction; //0=none,1=up,2=down,3=left,4=right
 
 	constructor CellGame new() {
-		let cell = Cell.new(20, 20, 5);
+		let player = Cell.new(20, 20, 5);
+		let smallCell = Cell.new(100, 20, 4);
+		let bigCell = Cell.new(200, 100, 20);
 		let direction = 0;
 		return this;
 	}
+
+    method void dispose() {
+        do player.dispose();
+        do smallCell.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void collision(Cell a, Cell b) {
+    	if ((a.getX() = b.getX()) & (a.getY() = b.getY()) & (a.getSize() > b.getSize())) {
+    		do a.incSize(a.getSize() + b.getSize());
+    		do b.erase();
+    	}
+    	return;
+    }
 
     method void run() {
         var char key;
         var boolean exit;
 
+        do smallCell.draw();
+        do bigCell.draw();
+
         let exit = false;
+
+        do collision(player, smallCell);
 
         while (~exit) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();
                 do moveCell();
             }
+
             if (key = 81) {
                 let exit = true;
             }
@@ -45,25 +68,19 @@ class CellGame {
 
     method void moveCell() {
         if (direction = 1) {
-            do cell.moveUp();
+            do player.moveUp();
         }
         if (direction = 2) {
-            do cell.moveDown();
+            do player.moveDown();
         }
         if (direction = 3) {
-            do cell.moveLeft();
+            do player.moveLeft();
         }
         if (direction = 4) {
-            do cell.moveRight();
+            do player.moveRight();
         }
 
         do Sys.wait(5); // Delays the next movement.
         return;
     }
-
-	method void dispose() {
-		do cell.dispose();
-		do Memory.deAlloc(this);
-		return;
-	}
 }

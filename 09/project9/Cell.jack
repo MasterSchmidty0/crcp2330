@@ -12,6 +12,27 @@ class Cell {
 		return this;
 	}
 
+	method int getX() {
+		return x;
+	}
+
+	method int getY() {
+		return y;
+	}
+
+	method int getSize() {
+		return size;
+	}
+
+	method void incSize(int newSize) {
+		if (((y + size) < 254) & ((x + size) < 510)) {
+            do erase();
+            let size = size + newSize;
+            do draw();
+        }
+        return;
+	}
+
 	method void dispose() {
 		do Memory.deAlloc(this);
 		return;
@@ -29,53 +50,39 @@ class Cell {
 		return;
 	}
 
-	method void eat(Cell other) {
-		if ((x = other.x) & (y = other.y)) {
-			size = size + other.size;
-		}
-		return;
-	}
-
 	method void moveUp() {
 		if ((y - size) > 1) {
-			do Screen.setColor(false);
-			do Screen.drawCircle(x, y, size);
-			let y = y - 2;
-			do Screen.setColor(true);
-			do Screen.drawCircle(x, y, size);
+			do erase();
+			let y = y - 1;
+			do draw();
 		}
 		return;
 	}
 
 	method void moveDown() {
 		if ((y + size) < 254) {
-			do Screen.setColor(false);
-			do Screen.drawCircle(x, y, size);
-			let y = y + 2;
-			do Screen.setColor(true);
-			do Screen.drawCircle(x, y, size);
+			do erase();
+			let y = y + 1;
+			do draw();
 		}
 		return;
 	}
 
 	method void moveLeft() {
 		if ((x - size) > 1) {
-			do Screen.setColor(false);
-			do Screen.drawCircle(x, y, size);
-			let x = x - 2;
-			do Screen.setColor(true);
-			do Screen.drawCircle(x, y, size);
+			do erase();
+			let x = x - 1;
+			do draw();
 		}
 		return;
 	}
 
 	method void moveRight() {
 		if ((x + size) < 510) {
-			do Screen.setColor(false);
-			do Screen.drawCircle(x, y, size);
-			let x = x + 2;
-			do Screen.setColor(true);
-			do Screen.drawCircle(x, y, size);		}
+			do erase();
+			let x = x + 1;
+			do draw();		
+		}
 		return;
 	}
 }

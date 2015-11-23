@@ -1,5 +1,5 @@
 function CellGame.new 0
-push constant 2
+push constant 4
 call Memory.alloc 1
 pop pointer 0
 push constant 20
@@ -7,15 +7,87 @@ push constant 20
 push constant 5
 call Cell.new 3
 pop this 0
-push constant 0
+push constant 100
+push constant 20
+push constant 4
+call Cell.new 3
 pop this 1
+push constant 200
+push constant 100
+push constant 20
+call Cell.new 3
+pop this 2
+push constant 0
+pop this 3
 push pointer 0
+return
+function CellGame.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Cell.dispose 1
+pop temp 0
+push this 1
+call Cell.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function CellGame.collision 0
+push argument 0
+pop pointer 0
+push argument 1
+call Cell.getX 1
+push argument 2
+call Cell.getX 1
+eq
+push argument 1
+call Cell.getY 1
+push argument 2
+call Cell.getY 1
+eq
+and
+push argument 1
+call Cell.getSize 1
+push argument 2
+call Cell.getSize 1
+gt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push argument 1
+call Cell.getSize 1
+push argument 2
+call Cell.getSize 1
+add
+call Cell.incSize 2
+pop temp 0
+push argument 2
+call Cell.erase 1
+pop temp 0
+label IF_FALSE0
+push constant 0
 return
 function CellGame.run 2
 push argument 0
 pop pointer 0
+push this 1
+call Cell.draw 1
+pop temp 0
+push this 2
+call Cell.draw 1
+pop temp 0
 push constant 0
 pop local 1
+push pointer 0
+push this 0
+push this 1
+call CellGame.collision 3
+pop temp 0
 label WHILE_EXP0
 push local 1
 not
@@ -51,7 +123,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 1
-pop this 1
+pop this 3
 label IF_FALSE1
 push local 0
 push constant 133
@@ -60,7 +132,7 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 2
-pop this 1
+pop this 3
 label IF_FALSE2
 push local 0
 push constant 130
@@ -69,7 +141,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 3
-pop this 1
+pop this 3
 label IF_FALSE3
 push local 0
 push constant 132
@@ -78,7 +150,7 @@ if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push constant 4
-pop this 1
+pop this 3
 label IF_FALSE4
 label WHILE_EXP2
 push local 0
@@ -101,7 +173,7 @@ return
 function CellGame.moveCell 0
 push argument 0
 pop pointer 0
-push this 1
+push this 3
 push constant 1
 eq
 if-goto IF_TRUE0
@@ -111,7 +183,7 @@ push this 0
 call Cell.moveUp 1
 pop temp 0
 label IF_FALSE0
-push this 1
+push this 3
 push constant 2
 eq
 if-goto IF_TRUE1
@@ -121,7 +193,7 @@ push this 0
 call Cell.moveDown 1
 pop temp 0
 label IF_FALSE1
-push this 1
+push this 3
 push constant 3
 eq
 if-goto IF_TRUE2
@@ -131,7 +203,7 @@ push this 0
 call Cell.moveLeft 1
 pop temp 0
 label IF_FALSE2
-push this 1
+push this 3
 push constant 4
 eq
 if-goto IF_TRUE3
@@ -143,17 +215,6 @@ pop temp 0
 label IF_FALSE3
 push constant 5
 call Sys.wait 1
-pop temp 0
-push constant 0
-return
-function CellGame.dispose 0
-push argument 0
-pop pointer 0
-push this 0
-call Cell.dispose 1
-pop temp 0
-push pointer 0
-call Memory.deAlloc 1
 pop temp 0
 push constant 0
 return
