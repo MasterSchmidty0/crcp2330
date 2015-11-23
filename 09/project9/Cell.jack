@@ -28,4 +28,50 @@ class Cell {
 		do Screen.drawCircle(x, y, size);
 		return;
 	}
+
+	method void eat() {
+		//* if this cell overlaps a smaller cell, add its size to the size of the current cell */
+		return;
+	}
+
+	method void moveUp() {
+		if ((y - size) > 1) {
+			do Screen.setColor(false);
+			do Screen.drawCircle(x, y, size);
+			let y = y - 2;
+			do Screen.setColor(true);
+			do Screen.drawCircle(x, y, size);
+		}
+		return;
+	}
+
+	method void moveDown() {
+		if ((y + size) < 254) {
+			do Screen.setColor(false);
+			do Screen.drawCircle(x, y, size);
+			let y = y + 2;
+			do Screen.setColor(true);
+			do Screen.drawCircle(x, y, size);
+		}
+		return;
+	}
+
+	method void moveLeft() {
+		if ((x - size) > 1) {
+			do Screen.setColor(false);
+			do Screen.drawCircle(x, y, size);
+			let x = x - 2;
+			do Screen.drawCircle(x, y, size);
+		}
+		return;
+	}
+
+	method void moveRight() {
+		if ((x + size) < 510) {
+			do Screen.setColor(false);
+			do Screen.drawCircle(x, y, size);
+			let x = x + 2;
+			do Screen.drawCircle(x, y, size);		}
+		return;
+	}
 }

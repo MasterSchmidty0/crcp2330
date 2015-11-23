@@ -3,15 +3,63 @@ class CellGame {
 	field int direction; //0=none,1=up,2=down,3=left,4=right
 
 	constructor CellGame new() {
-		let cell = Cell.new(20, 20, 10);
+		let cell = Cell.new(20, 20, 5);
 		let direction = 0;
 		return this;
 	}
 
-	method void run() {
-		// TO DO
-		return;
+    method void run() {
+        var char key;
+        var boolean exit;
+
+        let exit = false;
+
+        while (~exit) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do moveCell();
+            }
+            if (key = 81) {
+                let exit = true;
+            }
+            if (key = 131) {
+                let direction = 1;
+            }
+            if (key = 133) {
+                let direction = 2;
+            }
+            if (key = 130) {
+                let direction = 3;
+            }
+            if (key = 132) {
+                let direction = 4;
+            }
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do moveCell();
+            }
+        }
+            
+        return;
 	}
+
+    method void moveCell() {
+        if (direction = 1) {
+            do cell.moveUp();
+        }
+        if (direction = 2) {
+            do cell.moveDown();
+        }
+        if (direction = 3) {
+            do cell.moveLeft();
+        }
+        if (direction = 4) {
+            do cell.moveRight();
+        }
+
+        do Sys.wait(5); // Delays the next movement.
+        return;
+    }
 
 	method void dispose() {
 		do cell.dispose();
