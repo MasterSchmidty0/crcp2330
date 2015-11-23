@@ -29,8 +29,10 @@ class Cell {
 		return;
 	}
 
-	method void eat() {
-		//* if this cell overlaps a smaller cell, add its size to the size of the current cell */
+	method void eat(Cell other) {
+		if ((x = other.x) & (y = other.y)) {
+			size = size + other.size;
+		}
 		return;
 	}
 
@@ -61,6 +63,7 @@ class Cell {
 			do Screen.setColor(false);
 			do Screen.drawCircle(x, y, size);
 			let x = x - 2;
+			do Screen.setColor(true);
 			do Screen.drawCircle(x, y, size);
 		}
 		return;
@@ -71,6 +74,7 @@ class Cell {
 			do Screen.setColor(false);
 			do Screen.drawCircle(x, y, size);
 			let x = x + 2;
+			do Screen.setColor(true);
 			do Screen.drawCircle(x, y, size);		}
 		return;
 	}
