@@ -39,60 +39,105 @@ function CellGame.collision 0
 push argument 0
 pop pointer 0
 push argument 1
-call Cell.getX 1
-push argument 2
-call Cell.getX 1
-eq
-push argument 1
-call Cell.getY 1
-push argument 2
-call Cell.getY 1
-eq
-and
-push argument 1
 call Cell.getSize 1
 push argument 2
 call Cell.getSize 1
 gt
+push argument 1
+call Cell.getX 1
+push argument 2
+call Cell.getX 1
+eq
+and
+push argument 1
+call Cell.getY 1
+push argument 2
+call Cell.getY 1
+eq
 and
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push argument 1
-push argument 1
-call Cell.getSize 1
 push argument 2
 call Cell.getSize 1
-add
 call Cell.incSize 2
 pop temp 0
 push argument 2
-call Cell.erase 1
+push constant 0
+call Cell.setAlive 2
+pop temp 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 10
+call String.new 1
+push constant 67
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call Output.printString 1
 pop temp 0
 label IF_FALSE0
+push constant 0
+push constant 30
+call Output.moveCursor 2
+pop temp 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push argument 1
+call Cell.getX 1
+call Output.printInt 1
+pop temp 0
+push constant 44
+call Output.printChar 1
+pop temp 0
+push argument 1
+call Cell.getY 1
+call Output.printInt 1
+pop temp 0
 push constant 0
 return
 function CellGame.run 2
 push argument 0
 pop pointer 0
-push this 1
-call Cell.draw 1
-pop temp 0
-push this 2
-call Cell.draw 1
-pop temp 0
 push constant 0
 pop local 1
-push pointer 0
-push this 0
-push this 1
-call CellGame.collision 3
-pop temp 0
 label WHILE_EXP0
 push local 1
 not
 not
 if-goto WHILE_END0
+push this 0
+call Cell.update 1
+pop temp 0
+push this 1
+call Cell.update 1
+pop temp 0
+push this 2
+call Cell.update 1
+pop temp 0
 label WHILE_EXP1
 push local 0
 push constant 0
@@ -173,6 +218,16 @@ return
 function CellGame.moveCell 0
 push argument 0
 pop pointer 0
+push pointer 0
+push this 0
+push this 1
+call CellGame.collision 3
+pop temp 0
+push pointer 0
+push this 0
+push this 2
+call CellGame.collision 3
+pop temp 0
 push this 3
 push constant 1
 eq

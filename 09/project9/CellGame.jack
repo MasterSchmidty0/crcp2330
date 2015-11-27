@@ -18,25 +18,36 @@ class CellGame {
     }
 
     method void collision(Cell a, Cell b) {
-    	if ((a.getX() = b.getX()) & (a.getY() = b.getY()) & (a.getSize() > b.getSize())) {
-    		do a.incSize(a.getSize() + b.getSize());
-    		do b.erase();
+    	if ( (a.getSize() > b.getSize()) & 
+    		 (a.getX() = b.getX()) &
+    		 (a.getY() = b.getY()) ) {
+
+    		do a.incSize(b.getSize());
+    		do b.setAlive(false);
+            do Output.moveCursor(0, 0);
+            do Output.printString("Collision!");
     	}
+        do Output.moveCursor(0, 30);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printInt(a.getX());
+        do Output.printChar(44);
+        do Output.printInt(a.getY());
     	return;
     }
+
 
     method void run() {
         var char key;
         var boolean exit;
 
-        do smallCell.draw();
-        do bigCell.draw();
-
         let exit = false;
 
-        do collision(player, smallCell);
-
         while (~exit) {
+            do player.update();
+            do smallCell.update();
+            do bigCell.update();
+
             while (key = 0) {
                 let key = Keyboard.keyPressed();
                 do moveCell();
@@ -67,6 +78,8 @@ class CellGame {
 	}
 
     method void moveCell() {
+        do collision(player, smallCell);
+        do collision(player, bigCell);
         if (direction = 1) {
             do player.moveUp();
         }

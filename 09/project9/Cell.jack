@@ -1,11 +1,13 @@
 class Cell {
 	field int x, y;
 	field int size;
+	field boolean alive;
 
 	constructor Cell new(int Ax, int Ay, int Asize) {
 		let x = Ax;
 		let y = Ay;
 		let size = Asize;
+		let alive = true;
 
 		do draw();
 
@@ -24,10 +26,25 @@ class Cell {
 		return size;
 	}
 
-	method void incSize(int newSize) {
+	method void setAlive(boolean state) {
+		let alive = state;
+		return;
+	}
+
+	method void update() {
+		if (alive) {
+			do draw();
+		}
+		if (~alive) {
+			do erase();
+		}
+		return;
+	}
+
+	method void incSize(int inc) {
 		if (((y + size) < 254) & ((x + size) < 510)) {
             do erase();
-            let size = size + newSize;
+            let size = size + inc;
             do draw();
         }
         return;
