@@ -26,6 +26,10 @@ class Cell {
 		return size;
 	}
 
+	method boolean getAlive() {
+		return alive;
+	}
+
 	method void setAlive(boolean state) {
 		let alive = state;
 		return;

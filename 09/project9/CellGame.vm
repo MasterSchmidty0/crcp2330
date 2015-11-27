@@ -1,5 +1,5 @@
 function CellGame.new 0
-push constant 4
+push constant 9
 call Memory.alloc 1
 pop pointer 0
 push constant 20
@@ -14,11 +14,31 @@ call Cell.new 3
 pop this 1
 push constant 200
 push constant 100
-push constant 20
+push constant 30
 call Cell.new 3
 pop this 2
-push constant 0
+push constant 50
+push constant 200
+push constant 8
+call Cell.new 3
 pop this 3
+push constant 150
+push constant 150
+push constant 16
+call Cell.new 3
+pop this 4
+push constant 400
+push constant 100
+push constant 10
+call Cell.new 3
+pop this 5
+push constant 0
+pop this 7
+push constant 5
+pop this 8
+push constant 0
+not
+pop this 6
 push pointer 0
 return
 function CellGame.dispose 0
@@ -27,8 +47,7 @@ pop pointer 0
 push this 0
 call Cell.dispose 1
 pop temp 0
-push this 1
-call Cell.dispose 1
+call smallCell.dispose 0
 pop temp 0
 push pointer 0
 call Memory.deAlloc 1
@@ -39,25 +58,39 @@ function CellGame.collision 0
 push argument 0
 pop pointer 0
 push argument 1
-call Cell.getSize 1
-push argument 2
-call Cell.getSize 1
-gt
-push argument 1
 call Cell.getX 1
 push argument 2
 call Cell.getX 1
 eq
-and
 push argument 1
 call Cell.getY 1
 push argument 2
 call Cell.getY 1
+eq
+and
+push argument 1
+call Cell.getAlive 1
+push constant 0
+not
+eq
+and
+push argument 2
+call Cell.getAlive 1
+push constant 0
+not
 eq
 and
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push argument 1
+call Cell.getSize 1
+push argument 2
+call Cell.getSize 1
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push argument 1
 push argument 2
 call Cell.getSize 1
@@ -67,41 +100,35 @@ push argument 2
 push constant 0
 call Cell.setAlive 2
 pop temp 0
-push constant 0
-push constant 0
-call Output.moveCursor 2
+push this 8
+push constant 1
+sub
+pop this 8
+label IF_FALSE1
+push argument 1
+call Cell.getSize 1
+push argument 2
+call Cell.getSize 1
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 2
+push argument 1
+call Cell.getSize 1
+call Cell.incSize 2
 pop temp 0
-push constant 10
-call String.new 1
-push constant 67
-call String.appendChar 2
-push constant 111
-call String.appendChar 2
-push constant 108
-call String.appendChar 2
-push constant 108
-call String.appendChar 2
-push constant 105
-call String.appendChar 2
-push constant 115
-call String.appendChar 2
-push constant 105
-call String.appendChar 2
-push constant 111
-call String.appendChar 2
-push constant 110
-call String.appendChar 2
-push constant 33
-call String.appendChar 2
-call Output.printString 1
+push argument 1
+push constant 0
+call Cell.setAlive 2
 pop temp 0
+push constant 0
+pop this 6
+label IF_FALSE2
 label IF_FALSE0
 push constant 0
 push constant 30
 call Output.moveCursor 2
-pop temp 0
-push constant 32
-call Output.printChar 1
 pop temp 0
 push constant 32
 call Output.printChar 1
@@ -127,6 +154,12 @@ pop local 1
 label WHILE_EXP0
 push local 1
 not
+push this 8
+push constant 0
+gt
+and
+push this 6
+and
 not
 if-goto WHILE_END0
 push this 0
@@ -136,6 +169,15 @@ push this 1
 call Cell.update 1
 pop temp 0
 push this 2
+call Cell.update 1
+pop temp 0
+push this 3
+call Cell.update 1
+pop temp 0
+push this 4
+call Cell.update 1
+pop temp 0
+push this 5
 call Cell.update 1
 pop temp 0
 label WHILE_EXP1
@@ -168,7 +210,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 1
-pop this 3
+pop this 7
 label IF_FALSE1
 push local 0
 push constant 133
@@ -177,7 +219,7 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 2
-pop this 3
+pop this 7
 label IF_FALSE2
 push local 0
 push constant 130
@@ -186,7 +228,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 3
-pop this 3
+pop this 7
 label IF_FALSE3
 push local 0
 push constant 132
@@ -195,7 +237,7 @@ if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push constant 4
-pop this 3
+pop this 7
 label IF_FALSE4
 label WHILE_EXP2
 push local 0
@@ -213,6 +255,93 @@ goto WHILE_EXP2
 label WHILE_END2
 goto WHILE_EXP0
 label WHILE_END0
+push this 8
+push constant 0
+lt
+push this 8
+push constant 0
+eq
+or
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 0
+call Cell.erase 1
+pop temp 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 8
+call String.new 1
+push constant 89
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 87
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_FALSE5
+push this 6
+not
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push this 0
+call Cell.erase 1
+pop temp 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 16
+call String.new 1
+push constant 89
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 87
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_FALSE6
 push constant 0
 return
 function CellGame.moveCell 0
@@ -228,7 +357,22 @@ push this 0
 push this 2
 call CellGame.collision 3
 pop temp 0
+push pointer 0
+push this 0
 push this 3
+call CellGame.collision 3
+pop temp 0
+push pointer 0
+push this 0
+push this 4
+call CellGame.collision 3
+pop temp 0
+push pointer 0
+push this 0
+push this 5
+call CellGame.collision 3
+pop temp 0
+push this 7
 push constant 1
 eq
 if-goto IF_TRUE0
@@ -238,7 +382,7 @@ push this 0
 call Cell.moveUp 1
 pop temp 0
 label IF_FALSE0
-push this 3
+push this 7
 push constant 2
 eq
 if-goto IF_TRUE1
@@ -248,7 +392,7 @@ push this 0
 call Cell.moveDown 1
 pop temp 0
 label IF_FALSE1
-push this 3
+push this 7
 push constant 3
 eq
 if-goto IF_TRUE2
@@ -258,7 +402,7 @@ push this 0
 call Cell.moveLeft 1
 pop temp 0
 label IF_FALSE2
-push this 3
+push this 7
 push constant 4
 eq
 if-goto IF_TRUE3

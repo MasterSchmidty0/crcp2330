@@ -1,12 +1,20 @@
 class CellGame {
-	field Cell player, smallCell, bigCell;
-	field int direction; //0=none,1=up,2=down,3=left,4=right
+	field Cell player;
+    field Cell cellA, cellB, cellC, cellD, cellE;
+    field boolean gamePlaying;
+	field int direction;
+    field int enemyCount; //0=none,1=up,2=down,3=left,4=right
 
 	constructor CellGame new() {
 		let player = Cell.new(20, 20, 5);
-		let smallCell = Cell.new(100, 20, 4);
-		let bigCell = Cell.new(200, 100, 20);
+		let cellA = Cell.new(100, 20, 4);
+		let cellB = Cell.new(200, 100, 30);
+        let cellC = Cell.new(50, 200, 8);
+        let cellD = Cell.new(150, 150, 16);
+        let cellE = Cell.new(400, 100, 10);
 		let direction = 0;
+        let enemyCount = 5;
+        let gamePlaying = true;
 		return this;
 	}
 
@@ -18,17 +26,22 @@ class CellGame {
     }
 
     method void collision(Cell a, Cell b) {
-    	if ( (a.getSize() > b.getSize()) & 
-    		 (a.getX() = b.getX()) &
-    		 (a.getY() = b.getY()) ) {
-
-    		do a.incSize(b.getSize());
-    		do b.setAlive(false);
-            do Output.moveCursor(0, 0);
-            do Output.printString("Collision!");
+    	if ((a.getX() = b.getX()) &
+    		 (a.getY() = b.getY()) &
+             (a.getAlive() = true) &
+             (b.getAlive() = true)) {
+             if (a.getSize() > b.getSize()) {
+                do a.incSize(b.getSize());
+                do b.setAlive(false);
+                let enemyCount = enemyCount - 1;
+             }
+             if (a.getSize() < b.getSize()) {
+                do b.incSize(a.getSize());
+                do a.setAlive(false);
+                let gamePlaying = false;
+             }
     	}
         do Output.moveCursor(0, 30);
-        do Output.printChar(32);
         do Output.printChar(32);
         do Output.printInt(a.getX());
         do Output.printChar(44);
@@ -43,11 +56,13 @@ class CellGame {
 
         let exit = false;
 
-        while (~exit) {
+        while ((~exit) & (enemyCount > 0) & gamePlaying) {
             do player.update();
-            do smallCell.update();
-            do bigCell.update();
-
+            do cellA.update();
+            do cellB.update();
+            do cellC.update();
+            do cellD.update();
+            do cellE.update();
             while (key = 0) {
                 let key = Keyboard.keyPressed();
                 do moveCell();
@@ -73,13 +88,26 @@ class CellGame {
                 do moveCell();
             }
         }
+        if ((enemyCount < 0) | (enemyCount = 0)) {
+            do player.erase();
+            do Output.moveCursor(0, 0);
+            do Output.printString("You Win!");
+        }
+        if (~gamePlaying) {
+            do player.erase();
+            do Output.moveCursor(0, 0);
+            do Output.printString("Your Were Eaten!");
+        }
             
         return;
 	}
 
     method void moveCell() {
-        do collision(player, smallCell);
-        do collision(player, bigCell);
+        do collision(player, cellA);
+        do collision(player, cellB);
+        do collision(player, cellC);
+        do collision(player, cellD);
+        do collision(player, cellE);
         if (direction = 1) {
             do player.moveUp();
         }
