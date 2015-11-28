@@ -14,18 +14,5 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    Not(in=b, out=notB);
-    Not(in=sel, out=notSel);
-    Not(in=a, out=notA);
-    And(a=a, b=notB, out=aAndNotB);
-    And(a=aAndNotB, b=notSel, out=part1);
-    And(a=a, b=b, out=aAndB);
-    And(a=aAndB, b=notSel, out=part2);
-    And(a=notA, b=b, out=notAAndB);
-    And(a=notAAndB, b=sel, out=part3);
-    And(a=a, b=b, out=aAndB2);
-    And(a=aAndB2, b=sel, out=part4);
-    Or(a=part1, b=part2, out=topHalf);
-    Or(a=part3, b=part4, out=bottomHalf);
-    Or(a=topHalf, b=bottomHalf, out=out);
+    // Put your code here:
 }
