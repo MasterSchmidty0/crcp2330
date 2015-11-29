@@ -1,7 +1,5 @@
 #! /usr/bin/env ruby
 
-puts "Hi! What's your name?"
+asm_filename = ARGV[0]
 
-name = gets.chomp
-
-puts "Hey, #{name}! What's up?"
+puts asm_filename
