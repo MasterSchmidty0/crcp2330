@@ -18,6 +18,5 @@ unless is_readable?(asm_filename)
 	abort("#{asm_filename} not found or is unreadable")
 end
 
-file = File.open(asm_filename, "r")
-contents = file.read
-puts contents
+asm_file = File.open(asm_filename)
+puts asm_file.read
