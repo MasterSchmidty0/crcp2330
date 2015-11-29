@@ -11,8 +11,7 @@ class Assembler
 	end
 
 	def assemble!
-		# hack_instructions = @parser.parse_asm
-		# @hack_file << hack_instructions
+		@parser.parse.each { |instruction| @hack_file << instruction << "\n" }
 	end
 
 	def instructions_from_file
