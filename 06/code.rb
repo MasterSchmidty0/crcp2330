@@ -1,7 +1,7 @@
 class Code
 
 	DEST = {
-		nil => '',
+		nil => '000',
 		'M' => '001',
 		'D' => '010',
 		'MD' => '011',
@@ -12,6 +12,7 @@ class Code
 	}
 
 	COMP = {
+		nil => '000000',
 		'0' => '101010',
 		'1' => '111111',
 		'-1' => '111010',
@@ -43,7 +44,7 @@ class Code
 	}
 
 	JUMP = {
-		nil => '',
+		nil => '000',
 		'JGT' => '001',
 		'JEQ' => '010',
 		'JGE' => '011',
@@ -59,11 +60,11 @@ class Code
 
 
 	def comp(mnemonic)
-		
+		COMP[mnemonic]
 	end
 
 	def jump(mnemonic)
-		"JJJ"
+		JUMP[mnemonic]
 	end
 
 end

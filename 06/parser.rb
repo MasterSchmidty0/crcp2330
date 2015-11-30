@@ -4,6 +4,7 @@ class Parser
 
 	def initialize(assembly_instructions)
 		@assembly_instructions = assembly_instructions
+		@code = Code.new()
 		@machine_instructions = []
 	end
 
@@ -29,6 +30,14 @@ class Parser
 
 	def assemble_c_command(instruction)
 			command = "111"
+			if comp!(instruction).include?('M')
+				command << "1"
+			else
+				command << "0"
+			end
+			command << @code.comp(comp!(instruction))
+			command << @code.dest(dest!(instruction))
+			command << @code.jump(jump!(instruction))
 	end
 
 	def command_type(instruction)
@@ -39,5 +48,17 @@ class Parser
 		end
 	end
 
+	def dest!(c_command)
+		dest_part = c_command.split('=')[0]
+	end
+
+	def comp!(c_command)
+		part_1 = c_command.split('=')[1]
+		comp_part = part_1.split(';')[0]
+	end
+
+	def jump!(c_command)
+		jump_part = c_command.split(';')[1]
+	end
 
 end
