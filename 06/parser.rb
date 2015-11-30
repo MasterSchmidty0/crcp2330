@@ -1,3 +1,5 @@
+require_relative 'code'
+
 class Parser
 
 	def initialize(assembly_instructions)
