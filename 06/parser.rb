@@ -49,12 +49,20 @@ class Parser
 	end
 
 	def dest!(c_command)
-		dest_part = c_command.split('=')[0]
+		if c_command.include?('=')
+			dest_part = c_command.split('=')[0]
+		else
+			dest_part = nil
+		end
 	end
 
 	def comp!(c_command)
-		part_1 = c_command.split('=')[1]
-		comp_part = part_1.split(';')[0]
+		if c_command.include?('=')
+			part_1 = c_command.split('=')[1]
+			comp_part = part_1.split(';')[0]
+		else
+			comp_part = c_command.split(';')[0]
+		end
 	end
 
 	def jump!(c_command)
