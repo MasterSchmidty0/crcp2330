@@ -1,5 +1,11 @@
 require_relative 'code'
 
+class String
+	def is_numeric?
+		true if Float(self) rescue false
+	end
+end
+
 class Parser
 
 	SYMBOLS = {
@@ -22,8 +28,8 @@ class Parser
 		'R11' => '11',
 		'R12' => '12',
 		'R13' => '13',
-		'R14' => '15',
-		'R16' => '16',
+		'R14' => '14',
+		'R15' => '15',
 		'SCREEN' => '16384',
 		'KBD' => '24576'
 	}
@@ -53,12 +59,16 @@ class Parser
 		@assembly_instructions.each do |instruction|
 			if command_type(instruction) == :a_command
 				variable = instruction[1..-1]
-				if SYMBOLS.has_key?(variable)
-					@machine_instructions << assemble_a_command(symbol(variable))
+				if variable.is_numeric?
+					@machine_instructions << assemble_a_command(variable)
 				else
-					SYMBOLS["#{variable}"] = variable_counter
-					@machine_instructions << assemble_a_command(symbol(variable))
-					variable_counter += 1
+					if SYMBOLS.has_key?(variable)
+						@machine_instructions << assemble_a_command(symbol(variable))
+					else
+						SYMBOLS["#{variable}"] = variable_counter
+						@machine_instructions << assemble_a_command(symbol(variable))
+						variable_counter += 1
+					end
 				end
 			elsif command_type(instruction) == :c_command
 				@machine_instructions << assemble_c_command(instruction)
